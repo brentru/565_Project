@@ -1188,65 +1188,6 @@ debug\ConnectionPage.obj: ..\RSNI_GUI\ConnectionPage.cpp ../RSNI_GUI/ConnectionP
 		O:\Qt\5.9.9\msvc2017_64\include\QtCore\qtimer.h \
 		O:\Qt\5.9.9\msvc2017_64\include\QtCore\qbasictimer.h \
 		ui_ConnectionPage.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtCore\QVariant \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QAction \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qaction.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtGui\qicon.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qactiongroup.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QApplication \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qapplication.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtCore\qcoreapplication.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtCore\qeventloop.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qdesktopwidget.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtGui\qguiapplication.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtGui\qinputmethod.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QButtonGroup \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qbuttongroup.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QCheckBox \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qcheckbox.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qabstractbutton.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QFrame \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qframe.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QGridLayout \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qgridlayout.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qlayout.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qlayoutitem.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qboxlayout.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QHBoxLayout \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QHeaderView \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qheaderview.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qabstractitemview.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qabstractscrollarea.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtCore\qabstractitemmodel.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtCore\qitemselectionmodel.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qabstractitemdelegate.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qstyleoption.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qabstractspinbox.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtGui\qvalidator.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtCore\qregularexpression.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qslider.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qabstractslider.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qstyle.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qtabbar.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qtabwidget.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qrubberband.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QLabel \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qlabel.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QLineEdit \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qlineedit.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtGui\qtextcursor.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtGui\qtextformat.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtGui\qpen.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtGui\qtextoption.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QPushButton \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qpushbutton.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QSpacerItem \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QSpinBox \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qspinbox.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QTextEdit \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qtextedit.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtGui\qtextdocument.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QVBoxLayout \
 		O:\Qt\5.9.9\msvc2017_64\include\QtCore\QDebug
 
 debug\GlobalTypes.obj: ..\RSNI_GUI\GlobalTypes.cpp ../RSNI_GUI/GlobalTypes.h \
@@ -1516,33 +1457,6 @@ debug\MessagePage.obj: ..\RSNI_GUI\MessagePage.cpp ../RSNI_GUI/MessagePage.h \
 		O:\Qt\5.9.9\msvc2017_64\include\QtCore\qtimer.h \
 		O:\Qt\5.9.9\msvc2017_64\include\QtCore\qbasictimer.h \
 		ui_MessagePage.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtCore\QVariant \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QAction \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qaction.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qactiongroup.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QApplication \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qapplication.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtCore\qcoreapplication.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtCore\qeventloop.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qdesktopwidget.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtGui\qguiapplication.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtGui\qinputmethod.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QButtonGroup \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qbuttongroup.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QGridLayout \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qgridlayout.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qlayout.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qlayoutitem.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qboxlayout.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QHeaderView \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qheaderview.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QLabel \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qlabel.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QPushButton \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qpushbutton.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qabstractbutton.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QSpinBox \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qspinbox.h \
 		O:\Qt\5.9.9\msvc2017_64\include\QtCore\QDebug
 
 debug\Messages.obj: ..\RSNI_GUI\Messages.cpp ../RSNI_GUI/Messages.h
@@ -1676,51 +1590,6 @@ debug\ProcessPage.obj: ..\RSNI_GUI\ProcessPage.cpp ../RSNI_GUI/ProcessPage.h \
 		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qabstractbutton.h \
 		O:\Qt\5.9.9\msvc2017_64\include\QtGui\qicon.h \
 		ui_ProcessPage.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtCore\QVariant \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QAction \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qaction.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qactiongroup.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QApplication \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qapplication.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtCore\qcoreapplication.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtCore\qeventloop.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qdesktopwidget.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtGui\qguiapplication.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtGui\qinputmethod.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QButtonGroup \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qbuttongroup.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QComboBox \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qcombobox.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qabstractitemdelegate.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qstyleoption.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qabstractspinbox.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtGui\qvalidator.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtCore\qregularexpression.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qslider.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qabstractslider.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qstyle.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qtabbar.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qtabwidget.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qrubberband.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qframe.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtCore\qabstractitemmodel.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QHBoxLayout \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qboxlayout.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qlayout.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qlayoutitem.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qgridlayout.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QHeaderView \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qheaderview.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qabstractitemview.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qabstractscrollarea.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtCore\qitemselectionmodel.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QLabel \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qlabel.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QSpacerItem \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QTableWidget \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qtablewidget.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qtableview.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QVBoxLayout \
 		O:\Qt\5.9.9\msvc2017_64\include\QtCore\QDebug
 
 debug\TCPHandler.obj: ..\RSNI_GUI\TCPHandler.cpp ../RSNI_GUI/TCPHandler.h \
@@ -2222,36 +2091,7 @@ debug\MainWindow.obj: ..\RSNI_GUI\MainWindow.cpp ../RSNI_GUI/MainWindow.h \
 		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QTableWidgetItem \
 		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QComboBox \
 		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qcombobox.h \
-		ui_MainWindow.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtCore\QVariant \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QAction \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qaction.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qactiongroup.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QApplication \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qapplication.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtCore\qcoreapplication.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtCore\qeventloop.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qdesktopwidget.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtGui\qguiapplication.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtGui\qinputmethod.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QButtonGroup \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qbuttongroup.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QHBoxLayout \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qboxlayout.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qlayout.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qlayoutitem.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qgridlayout.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QHeaderView \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qheaderview.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QMenuBar \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qmenubar.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qmenu.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QSpacerItem \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QStackedWidget \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qstackedwidget.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QStatusBar \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\qstatusbar.h \
-		O:\Qt\5.9.9\msvc2017_64\include\QtWidgets\QVBoxLayout
+		ui_MainWindow.h
 
 debug\moc_ConnectionPage.obj: debug\moc_ConnectionPage.cpp 
 

@@ -1,5 +1,0 @@
-10-14-2020
-    Created and structured project
-    Finished Connection page
-    Created Message page, needs to be tested further
-    Left off on MessageHandler. Need to implement converting to XML.
