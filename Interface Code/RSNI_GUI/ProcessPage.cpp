@@ -90,6 +90,22 @@ void ProcessPage::processMessage(RxMessage msg)
 void ProcessPage::stopProcessButtonPressed(int sensorID)
 {
     debugMessage("Killing sensor (" + QString::number(sensorID) + ")");
+    TxMessage msg;
+    msg[0].name = "id";
+    msg[0].dataType = "uint8_t";
+    msg[0].value = QString::number(Messages::KillProcessID);
+
+    //Get the sensor
+    int sensorIdx = getSensorIdx(sensorID);
+    if(sensorIdx >= 0){
+        Sensor sensor = sensors[sensorIdx];
+
+        msg[1].name = "pid";
+        msg[1].dataType = "uint32_t";
+        msg[1].value = QString::number(sensor.PID);
+
+        msgHandler->sendMessage(msg);
+    }
 }
 
 void ProcessPage::pauseProcessButtonPressed(int sensorID)
