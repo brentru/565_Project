@@ -28,6 +28,12 @@ class RPC_Handler(socketserver.BaseRequestHandler):
         :param str xml_cmd_string: XML message.
 
         """
+        # 
+        msg_id = None
+        msg_result = None
+        msg_sensor_id = None
+        msg_pid = None
+
         try:
             root = ET.fromstring(xml_cmd_string)
         except:
@@ -35,24 +41,24 @@ class RPC_Handler(socketserver.BaseRequestHandler):
             return False
         print('Message Fields: ', len(root))
 
-        # Parse out message
+        # Parse out XML message
         for child in root:
-            print(child.tag)
-            print(child.attrib)
-            if child.text == "id":
+            if child.tag == "id":
+                msg_id = child.text
                 print("Message ID: ", msg_id)
-                msg_id = child.attrib
-            elif child.text == "Result":
-                msg_result = child.text
-                print("Message Result: ", msg_result)
-            elif child.text == "sensorid":
-                msg_sensor_id = child.text
-                print("Message Sensor ID: ", msg_sensor_id)
-            elif child.text == "pid":
-                msg_pid = child.text
-                print("Message Sensor ID: ", msg_sensor_id)
-            else:
-                print("ERROR: Unexpected message field.")
+            elif child.tag == "data":
+                # Check attribute for each data type
+                if "result" in child.attrib['name']:
+                    msg_result = child.text
+                    print("Message Result: ", msg_result)
+                elif "sensorid" in child.attrib['name']:
+                    msg_sensor_id = child.text
+                    print("Message sensorID: ", msg_sensor_id)
+                elif "pid" in child.attrib['name']:
+                    msg_pid = child.text
+                    print("Message PID: ", msg_pid)
+                else:
+                    print("ERROR: Unexpected message field.")
 
         return True
 
