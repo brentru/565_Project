@@ -23,9 +23,8 @@ class RPC_Handler(socketserver.BaseRequestHandler):
 
     """
 
-    def parse_command(self, xml_file_name):
-        tree = ET.parse('country_data.xml')
-        root = tree.getroot()
+    def parse_command(self, xml_cmd_string):
+        root = ET.fromstring(xml_cmd_string)
         msg_id = root[0].text
         print("Message ID: ", msg_id)
         msg_data = root[1].attrib
@@ -45,7 +44,8 @@ class RPC_Handler(socketserver.BaseRequestHandler):
                 f.write(_data) 
             """
 
-            self.parse_command(_data)
+            # Parse XML command
+            self.parse_command(_data.decode())
 
             # Server handler keep-alive loop
             # TODO: Handle message which contains a command
