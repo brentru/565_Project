@@ -2,6 +2,7 @@ import socketserver
 import socket
 import threading
 import logging
+import xml.etree.ElementTree as ET
 
 # Configuration #
 
@@ -21,11 +22,30 @@ class RPC_Handler(socketserver.BaseRequestHandler):
     Handles communication with a connected TCP client.
 
     """
+
+    def parse_command(self, xml_file_name):
+        tree = ET.parse('country_data.xml')
+        root = tree.getroot()
+        msg_id = root[0].text
+        print("Message ID: ", msg_id)
+        msg_data = root[1].attrib
+        print("Data Attributes: ", msg_data)
+        msg_data_value = root[1].text
+        print("Data Value:", msg_data_value)
+
     def handle(self):
         close = 0
         while not close:
             _data = self.request.recv(1024)
             print("{} bytes rcvd: {}: ".format(len(_data), _data))
+
+            """
+            # Write XML request to a file
+            with open('commandMsg.xml', 'wb') as f: 
+                f.write(_data) 
+            """
+
+            self.parse_command(_data)
 
             # Server handler keep-alive loop
             # TODO: Handle message which contains a command
@@ -35,6 +55,8 @@ class RPC_Handler(socketserver.BaseRequestHandler):
                 return
             if b'quit' in _data:
                 close = 1
+
+
 
 if __name__ == '__main__':
     import socket
