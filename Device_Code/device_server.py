@@ -24,39 +24,62 @@ class RPC_Handler(socketserver.BaseRequestHandler):
     """
 
     def parse_command(self, xml_cmd_string):
-        root = ET.fromstring(xml_cmd_string)
-        msg_id = root[0].text
-        print("Message ID: ", msg_id)
-        msg_data = root[1].attrib
-        print("Data Attributes: ", msg_data)
-        msg_data_value = root[1].text
-        print("Data Value:", msg_data_value)
+        """Parses XML message using message table.
+        :param str xml_cmd_string: XML message.
+
+        """
+        try:
+            root = ET.fromstring(xml_cmd_string)
+        except:
+            print("ERROR: Unable to parse command!")
+            return False
+        print('Message Fields: ', len(root))
+
+        # Parse out message
+        for child in root:
+            print(child.tag)
+            print(child.attrib)
+            if child.text == "id":
+                print("Message ID: ", msg_id)
+                msg_id = child.attrib
+            elif child.text == "Result":
+                msg_result = child.text
+                print("Message Result: ", msg_result)
+            elif child.text == "sensorid":
+                msg_sensor_id = child.text
+                print("Message Sensor ID: ", msg_sensor_id)
+            elif child.text == "pid":
+                msg_pid = child.text
+                print("Message Sensor ID: ", msg_sensor_id)
+            else:
+                print("ERROR: Unexpected message field.")
+
+        return True
 
     def handle(self):
+        """Handles all incoming TCP messages
+        using BaseRequestHandler.
+
+        """
         close = 0
         while not close:
             _data = self.request.recv(1024)
             print("{} bytes rcvd: {}: ".format(len(_data), _data))
 
-            """
-            # Write XML request to a file
-            with open('commandMsg.xml', 'wb') as f: 
-                f.write(_data) 
-            """
+            # Parse XML command, should return if OK
+            if not self.parse_command(_data.decode()):
+                # Unable to parse command, close socket
+                # to prevent future malformed commands
+                close = 1
 
-            # Parse XML command
-            self.parse_command(_data.decode())
-
-            # Server handler keep-alive loop
-            # TODO: Handle message which contains a command
-            # which kills the server
+            # Keep TCP server alive
+            # TODO: Handle an incoming msg which contains a command
+            # which kills the server (shuts socket)
             if not _data:
                 # EOF, client closed, just return
                 return
             if b'quit' in _data:
                 close = 1
-
-
 
 if __name__ == '__main__':
     import socket
