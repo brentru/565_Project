@@ -46,7 +46,8 @@ def dispatch_sensor_process(sensor_id):
         return False
 
     print("Spawning process type: %d..."%int(sensor_id))
-    proc = subprocess.Popen(['python3', 'temperature_sensor.py'],stdout=subprocess.PIPE)
+    proc = subprocess.Popen(['python3', 'temperature_sensor.py'],
+                            stdout=subprocess.PIPE)
     print('Process PID: ', proc.pid)
     # Add PID object and process to the active PID pool
     PID_POOL.append((proc.pid, proc))
@@ -72,11 +73,15 @@ def kill_sensor_process(pid):
 
     """
     print("Killing process %d"%pid)
-    if pid not in PID_POOL:
+    print(PID_POOL)
+    if pid not in PID_POOL[0]:
         print("ERROR: PID not found in PID pool")
         return False
-    print("killed")
-    # TODO: impl!
+    # obtain index of subprocess.Popen object
+    pid_index = next((i for i, v in enumerate(PID_POOL) if v[0] == pid), None)
+    # kill it
+    PID_POOL[pid_index][1].kill()
+    print("Process killed!")
     return True
 
 class RPC_Handler(socketserver.BaseRequestHandler):
