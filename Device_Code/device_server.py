@@ -41,12 +41,27 @@ def dispatch_sensor_process(sensor_id):
 
     """
     print("Spawning process %d..."%NODE_SENSORS[int(sensor_id)])
-    proc = subprocess.Popen(['python3', 'temperature_sensor.py'],
-                             stdout=subprocess.PIPE)
-    print('Process PID: ', proc.pid())
+    proc = subprocess.Popen(['python3', 'temperature_sensor.py'],stdout=subprocess.PIPE)
+    pid = proc.pid()
+    print('Process PID: ', pid)
+    # Add PID object and process to the active PID pool
+    PID_POOL.append((pid, proc))
 
-    # Add PID to active PID pool
-    PID_POOL.append(proc.pid())
+    return pid
+
+def read_sensor_process(pid):
+    """Reads and returns an active sensor process' STDOUT
+    :param int pid: A valid PID.
+    """
+    print("Reading sensor process: %d"%pid)
+    if pid not in PID_POOL:
+        print("ERROR: PID not found in PID pool")
+        return False
+
+    proc_out = PID_POOL[pid][1].stdout.readline()
+    # TODO: This should be moved within parse_command
+    print("Output: ", proc_out)
+    return proc_out
 
 class RPC_Handler(socketserver.BaseRequestHandler):
     """Request handler class for a RPC_Server. 
@@ -83,7 +98,7 @@ class RPC_Handler(socketserver.BaseRequestHandler):
                     msg_sensor_id = child.text
                     print("Message sensorID: ", msg_sensor_id)
                     # Dispatch a sensor process with sensor id
-                    dispatch_sensor_process(msg_sensor_id)
+                    pid = dispatch_sensor_process(msg_sensor_id)
                 elif "pid" in child.attrib['name']:
                     msg_pid = child.text
                     print("Message PID: ", msg_pid)

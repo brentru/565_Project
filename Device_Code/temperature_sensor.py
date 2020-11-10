@@ -2,19 +2,19 @@
 # Temperature sensor classes for use with a device_server
 # Authors: Brent Rubell, Todd Moorehouse for UMass Dartmouth ECE565
 # LICENSE: MIT-0
+import time
 from random import randint
 
-get_temperature():
+def get_temperature():
     """Mocks a temperature sensor outputting once every second.
 
     """
-    while True:
-        temperature_data = randint(0, 100)
-        print(temperature_data)
-        time.sleep(1)
+    temperature_data = randint(0, 100)
+    print(temperature_data)
 
 if __name__ == '__main__':
-    print("Started temperature sensor!")
-    get_temperature()
+    while True:
+        get_temperature()
+        time.sleep(1)
 
 
