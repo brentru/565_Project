@@ -66,6 +66,19 @@ def read_sensor_process(pid):
     print("Output: ", proc_out)
     return proc_out
 
+def kill_sensor_process(pid):
+    """Kills an active sensor process.
+    :param int pid: A valid process identifier.
+
+    """
+    print("Killing process %d"%pid)
+    if pid not in PID_POOL:
+        print("ERROR: PID not found in PID pool")
+        return False
+    print("killed")
+    # TODO: impl!
+    return True
+
 class RPC_Handler(socketserver.BaseRequestHandler):
     """Request handler class for a RPC_Server. 
     Handles communication with a connected TCP client.
@@ -90,7 +103,7 @@ class RPC_Handler(socketserver.BaseRequestHandler):
         # Parse out XML message
         for child in root:
             if child.tag == "id":
-                msg_id = child.text
+                msg_id = int(child.text)
                 print("Message ID: ", msg_id)
             elif child.tag == "data":
                 # Check attribute for each data type
@@ -102,9 +115,20 @@ class RPC_Handler(socketserver.BaseRequestHandler):
                     print("Message sensorID: ", msg_sensor_id)
                     # Dispatch a sensor process with sensor id
                     pid = dispatch_sensor_process(msg_sensor_id)
-                elif "pid" in child.attrib['name']:
+                elif "PID" in child.attrib['name']:
                     msg_pid = child.text
                     print("Message PID: ", msg_pid)
+                    if msg_id == 1: # Kill active sensor process
+                        print("Killing active process..")
+                        kill_sensor_process(int(msg_pid))
+                    elif msg_id == 3:
+                        # Re-dispatch the process
+                        # TODO!
+                        print("Reset process")
+                    elif msg_id == 15:
+                        # Get process status
+                        # TODO
+                        print("Process status")
                 else:
                     print("ERROR: Unexpected message field.")
         return True
