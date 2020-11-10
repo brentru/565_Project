@@ -40,14 +40,17 @@ def dispatch_sensor_process(sensor_id):
     :param int sensor_id: Sensor type.
 
     """
-    print("Spawning process %d..."%NODE_SENSORS[int(sensor_id)])
-    proc = subprocess.Popen(['python3', 'temperature_sensor.py'],stdout=subprocess.PIPE)
-    pid = proc.pid()
-    print('Process PID: ', pid)
-    # Add PID object and process to the active PID pool
-    PID_POOL.append((pid, proc))
+    # Verify that sensor process is within the node's ATTACHED_SENSORS
+    if int(sensor_id) not in ATTACHED_SENSORS:
+        print("ERROR: Sensor node does not contain this sensor type!")
+        return False
 
-    return pid
+    print("Spawning process type: %d..."%int(sensor_id))
+    proc = subprocess.Popen(['python3', 'temperature_sensor.py'],stdout=subprocess.PIPE)
+    print('Process PID: ', proc.pid)
+    # Add PID object and process to the active PID pool
+    PID_POOL.append((proc.pid, proc))
+    return proc.pid
 
 def read_sensor_process(pid):
     """Reads and returns an active sensor process' STDOUT
@@ -138,7 +141,7 @@ def start_server():
 
 if __name__ == '__main__':
     # Create a list of sensors attached to the node
-    NODE_SENSORS = [SENSOR_TEMP, SENSOR_HUMID,
+    ATTACHED_SENSORS = [SENSOR_TEMP, SENSOR_HUMID,
                     SENSOR_CPU_USAGE, SENSOR_CPU_TEMP,SENSOR_DUMMY]
 
     # Define server address
