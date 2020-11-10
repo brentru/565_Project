@@ -1,3 +1,9 @@
+# device_server.py
+# Interactive RPC-ish server
+# interfaces with the remote sensor node interface
+# Authors: Brent Rubell, Todd Moorehouse for UMass Dartmouth ECE565
+# LICENSE: MIT-0
+
 import logging
 import socket
 import socketserver
@@ -25,13 +31,22 @@ SENSOR_CPU_USAGE = 3
 SENSOR_CPU_TEMP  = 4
 SENSOR_DUMMY     = 5
 
+# PID Pool - stores all the PIDs currently in-use
+PID_POOL = []
+
 def dispatch_sensor_process(sensor_id):
     """Dispatches a sensor process based on the sensor
     identifier.
     :param int sensor_id: Sensor type.
 
     """
-    print("Dispatching sensor: ", NODE_SENSORS[int(sensor_id)])
+    print("Spawning process %d..."%NODE_SENSORS[int(sensor_id)])
+    proc = subprocess.Popen(['python3', 'temperature_sensor.py'],
+                             stdout=subprocess.PIPE)
+    print('Process PID: ', proc.pid())
+
+    # Add PID to active PID pool
+    PID_POOL.append(proc.pid())
 
 class RPC_Handler(socketserver.BaseRequestHandler):
     """Request handler class for a RPC_Server. 
