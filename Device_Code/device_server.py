@@ -46,8 +46,7 @@ def dispatch_sensor_process(sensor_id):
         return False
 
     print("Spawning process type: %d..."%int(sensor_id))
-    proc = subprocess.Popen(['python3', 'temperature_sensor.py'],
-                            stdout=subprocess.PIPE)
+    proc = subprocess.Popen(['python3', 'temperature_sensor.py'],stdout=subprocess.PIPE)
     print('Process PID: ', proc.pid)
     # Add PID object and process to the active PID pool
     PID_POOL.append((proc.pid, proc))
@@ -80,9 +79,14 @@ def kill_sensor_process(pid):
     # obtain index of subprocess.Popen object
     pid_index = next((i for i, v in enumerate(PID_POOL) if v[0] == pid), None)
     # kill it
-    PID_POOL[pid_index][1].kill()
-    print("Process killed!")
-    return True
+    PID_POOL[pid_index][1].terminate()
+    # wait for child process to terminate from zombie state
+    PID_POOL[pid_index][1].wait()
+    # Negative return code indicates process has terminated
+    if PID_POOL[pid_index][1].returncode < 0:
+        print("Process killed!")
+        return True
+    return False
 
 class RPC_Handler(socketserver.BaseRequestHandler):
     """Request handler class for a RPC_Server. 
