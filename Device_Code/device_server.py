@@ -10,6 +10,7 @@ import socketserver
 import subprocess
 import threading
 import xml.etree.ElementTree as ET
+from xml.dom import minidom
 
 # Configuration #
 
@@ -166,18 +167,32 @@ class RPC_Handler(socketserver.BaseRequestHandler):
 
         # Append subelement, <id>
         if ret_data[0] is not None:
-            result_id = ET.SubElement(message,"id")
-            result_id.text = str(ret_data[0]+1) # Resp is always id++
-            message.append(result_id)
+            xml_id = ET.SubElement(message,"id")
+            xml_id.text = str(ret_data[0]+1) # Resp is always id++
+
+        # Append subelement result
+        if ret_data[1] is not None:
+            xml_result = ET.SubElement(message, "data", {
+                "name":"result",
+                "type":"uint8_t"
+            })
+            xml_result.text = str(ret_data[1])
 
         # Append subelement sensor_id
         if ret_data[1] is not None:
-            sensor_id = ET.SubElement(message, "data", {
-                "type":"uint8_t",
-                "name":"sensorid"
+            xml_sensor_id = ET.SubElement(message, "data", {
+                "name":"sensorid",
+                "type":"uint8_t"
             })
-            sensor_id.text = str(ret_data[1])
-            message.append(sensor_id)
+            xml_sensor_id.text = str(ret_data[2])
+
+        # Append subelement sensor_pid
+        if ret_data[1] is not None:
+            xml_sensor_id = ET.SubElement(message, "data", {
+                "name":"pid",
+                "type":"uint32_t"
+            })
+            xml_sensor_id.text = str(ret_data[3])
 
         # Print message
         print(self.prettify(message))
@@ -187,7 +202,7 @@ class RPC_Handler(socketserver.BaseRequestHandler):
 
         from https://pymotw.com/3/xml.etree.ElementTree/create.html
         """
-        rough_string = ElementTree.tostring(elem, 'utf-8')
+        rough_string = ET.tostring(elem, 'utf-8')
         reparsed = minidom.parseString(rough_string)
         return reparsed.toprettyxml(indent="  ")
 
