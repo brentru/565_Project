@@ -122,6 +122,7 @@ class RPC_Handler(socketserver.BaseRequestHandler):
             return False
         # Parse out XML message
         for child in root:
+            print('Parsing Tag: ', child.tag)
             if child.tag == "id":
                 msg_id = int(child.text)
                 print("Message ID: ", msg_id)
@@ -137,12 +138,13 @@ class RPC_Handler(socketserver.BaseRequestHandler):
                     # with desired sensor id
                     msg_pid = dispatch_sensor_process(msg_sensor_id)
                     msg_result = 1
-                elif "PID" in child.attrib['name']:
+                elif "pid" in child.attrib['name']:
                     msg_pid = child.text
                     print("Message PID: ", msg_pid)
                     if msg_id == 1: # Kill active sensor process
                         print("Killing active process..")
-                        kill_sensor_process(int(msg_pid))
+                        msg_result = kill_sensor_process(int(msg_pid))
+                        msg_result = 0
                     elif msg_id == 3:
                         # Re-dispatch the process
                         # TODO!
@@ -153,7 +155,7 @@ class RPC_Handler(socketserver.BaseRequestHandler):
                         print("Process status")
                 else:
                     print("ERROR: Unexpected message field.")
-                    msg_result = -1
+                    msg_result = 0
         return (msg_id, msg_result, msg_sensor_id, msg_pid)
 
 
@@ -188,7 +190,7 @@ class RPC_Handler(socketserver.BaseRequestHandler):
             xml_result.text = str(ret_data[1])
 
         # Append subelement sensor_id
-        if ret_data[1] is not None:
+        if ret_data[2] is not None:
             xml_sensor_id = ET.SubElement(message, "data", {
                 "name":"sensorid",
                 "type":"uint8_t"
@@ -196,7 +198,7 @@ class RPC_Handler(socketserver.BaseRequestHandler):
             xml_sensor_id.text = str(ret_data[2])
 
         # Append subelement sensor_pid
-        if ret_data[1] is not None:
+        if ret_data[3] is not None:
             xml_sensor_id = ET.SubElement(message, "data", {
                 "name":"pid",
                 "type":"uint32_t"
