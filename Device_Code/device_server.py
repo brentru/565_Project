@@ -144,7 +144,6 @@ class RPC_Handler(socketserver.BaseRequestHandler):
                     if msg_id == 1: # Kill active sensor process
                         print("Killing active process..")
                         msg_result = kill_sensor_process(int(msg_pid))
-                        msg_result = 0
                     elif msg_id == 3:
                         # Re-dispatch the process
                         # TODO!
