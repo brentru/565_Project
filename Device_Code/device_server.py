@@ -43,7 +43,7 @@ def dispatch_sensor_process(sensor_id):
     # Verify that sensor process is within the node's ATTACHED_SENSORS
     if int(sensor_id) not in ATTACHED_SENSORS:
         print("ERROR: Sensor node does not contain this sensor type!")
-        return False
+        return 0 # failed
 
     print("Spawning process type: %d..."%int(sensor_id))
     proc = subprocess.Popen(['python3', 'temperature_sensor.py'],stdout=subprocess.PIPE)
@@ -94,18 +94,14 @@ class RPC_Handler(socketserver.BaseRequestHandler):
 
     """
 
-    def parse_command(self, xml_cmd_string):
+    def parse_command(self, xml_cmd_string, msg_id,
+                        msg_result, msg_sensor_id, msg_pid):
         """Parses XML message using message table.
         :param str xml_cmd_string: XML message.
 
         """
-        msg_id = None
-        msg_result = None
-        msg_sensor_id = None
-        msg_pid = None
-
         try: # attempt to parse XML command from interface
-            root = ET.fromstring(xml_cmd_string)
+            root = ET.fromstring(xml_cmd_string.decode())
         except:
             print("ERROR: Unable to parse command!")
             return False
@@ -122,7 +118,8 @@ class RPC_Handler(socketserver.BaseRequestHandler):
                 elif "sensorid" in child.attrib['name']:
                     msg_sensor_id = child.text
                     print("Message sensorID: ", msg_sensor_id)
-                    # Dispatch a sensor process with sensor id
+                    # Attempt to spawn a sensor process
+                    # with desired sensor id
                     pid = dispatch_sensor_process(msg_sensor_id)
                 elif "PID" in child.attrib['name']:
                     msg_pid = child.text
@@ -142,21 +139,38 @@ class RPC_Handler(socketserver.BaseRequestHandler):
                     print("ERROR: Unexpected message field.")
         return True
 
+    def send_data(self):
+        """Sends data back to remote sensor interface.
+
+        """
+        pass
+
     def handle(self):
         """Handles all incoming TCP messages
         using BaseRequestHandler.
 
         """
         close = 0
+
+        # Shared between requests and responses
+        msg_id = None
+        msg_result = None
+        msg_sensor_id = None
+        msg_pid = None
+
         while not close:
             _data = self.request.recv(1024)
             print("{} bytes rcvd: {}: ".format(len(_data), _data))
 
             # Parse XML command, should return if OK
-            if not self.parse_command(_data.decode()):
+            if not self.parse_command(_data, msg_id, msg_result,
+                                        msg_sensor_id, msg_pid):
                 # Unable to parse command, close socket
                 # to prevent future malformed commands
                 close = 1
+            
+            # Send data back
+            # TODO!
 
             # Keep TCP server alive
             # TODO: Handle an incoming msg which contains a command
