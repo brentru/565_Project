@@ -89,6 +89,15 @@ def kill_sensor_process(pid):
         return True
     return False
 
+def prettify(elem):
+    """Return a pretty-printed XML string for the Element.
+
+    from https://pymotw.com/3/xml.etree.ElementTree/create.html
+    """
+    rough_string = ET.tostring(elem, 'utf-8')
+    reparsed = minidom.parseString(rough_string)
+    return reparsed.toprettyxml(indent="  ")
+
 class RPC_Handler(socketserver.BaseRequestHandler):
     """Request handler class for a RPC_Server. 
     Handles communication with a connected TCP client.
@@ -195,16 +204,10 @@ class RPC_Handler(socketserver.BaseRequestHandler):
             xml_sensor_id.text = str(ret_data[3])
 
         # Print message
-        print(self.prettify(message))
-
-    def prettify(self, elem):
-        """Return a pretty-printed XML string for the Element.
-
-        from https://pymotw.com/3/xml.etree.ElementTree/create.html
-        """
-        rough_string = ET.tostring(elem, 'utf-8')
-        reparsed = minidom.parseString(rough_string)
-        return reparsed.toprettyxml(indent="  ")
+        print(prettify(message))
+        # Convert to bytestring for the socket
+        message = ET.tostring(message)
+        return message
 
     def handle(self):
         """Handles all incoming TCP messages
@@ -223,9 +226,12 @@ class RPC_Handler(socketserver.BaseRequestHandler):
             print(ret_data)
 
             # Build XML response
-            self.build_xml_document(ret_data)
+            xml_msg = None
+            xml_msg = self.build_xml_document(ret_data)
 
-            # Send XML response back to interface
+            # Send bytestring XML response back to interface
+            if xml_msg is not None:
+                self.request.sendall(xml_msg)
 
             # Keep TCP server alive
             # TODO: Handle an incoming msg which contains a command
