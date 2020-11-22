@@ -5,6 +5,7 @@
 # LICENSE: MIT-0
 
 import logging
+import signal
 import socket
 import socketserver
 import subprocess
@@ -67,18 +68,27 @@ def read_sensor_process(pid):
     print("Output: ", proc_out)
     return proc_out
 
-def kill_sensor_process(pid):
+def send_signal_process(pid, sigstop=False, sigcont=False):
     """Kills an active sensor process.
     :param int pid: A valid process identifier.
 
     """
-    print("Killing process %d"%pid)
+    print("Sending signal to process %d..."%pid)
 
     # obtain index of subprocess.Popen object
     pid_index = next((i for i, v in enumerate(PID_POOL) if v[0] == pid), None)
     if pid_index is None:
         print("ERROR: PID not found in thread pool.")
         return 0
+    
+    if not sigstop:
+        print("Sending pause signal to process")
+        PID_POOL[pid_index][1].send_signal(signal.SIGSTOP)
+        return 1
+    elif not sigcont:
+        print("Sending resume signal to process")
+        PID_POOL[pid_index][1].send_signal(signal.SIGSTOP)
+        return 1
     # kill the process
     PID_POOL[pid_index][1].terminate()
     # wait for child process to terminate from zombie state
@@ -143,20 +153,24 @@ class RPC_Handler(socketserver.BaseRequestHandler):
                     print("Message PID: ", msg_pid)
                     if msg_id == 1: # Kill active sensor process
                         print("Killing active process..")
-                        msg_result = kill_sensor_process(int(msg_pid))
+                        msg_result = send_signal_process(int(msg_pid))
                     elif msg_id == 3:
                         # Restart the process, attempt to kill existing process
-                        msg_result = kill_sensor_process(int(msg_pid))
+                        msg_result = send_signal_process(int(msg_pid))
                         if not msg_result:
                             print("Process did not exist.")
                         # then, re-dispatch a process, obtain new pid
                         msg_pid = dispatch_sensor_process(msg_sensor_id)
                         print("Restarted process")
                         msg_result = 1
+                    elif msg_id == 5: # Pause process
+                        msg_result = send_signal_process(int(msg_pid), sigstop=True)
                     elif msg_id == 15:
                         # Get process status
                         # TODO
                         print("Process status")
+                    elif msg_id == 17: # Continue process
+                        msg_result = send_signal_process(int(msg_pid), sigcont=True)
                 else:
                     print("ERROR: Unexpected message field.")
                     msg_result = 0
