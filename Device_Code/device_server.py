@@ -94,12 +94,17 @@ class RPC_Handler(socketserver.BaseRequestHandler):
 
     """
 
-    def parse_command(self, xml_cmd_string, msg_id,
-                        msg_result, msg_sensor_id, msg_pid):
+    def parse_command(self, xml_cmd_string):
         """Parses XML message using message table.
         :param str xml_cmd_string: XML message.
 
         """
+
+        msg_id = None
+        msg_result = None
+        msg_sensor_id = None
+        msg_pid = None
+
         try: # attempt to parse XML command from interface
             root = ET.fromstring(xml_cmd_string.decode())
         except:
@@ -120,7 +125,8 @@ class RPC_Handler(socketserver.BaseRequestHandler):
                     print("Message sensorID: ", msg_sensor_id)
                     # Attempt to spawn a sensor process
                     # with desired sensor id
-                    pid = dispatch_sensor_process(msg_sensor_id)
+                    msg_pid = dispatch_sensor_process(msg_sensor_id)
+                    msg_result = 1
                 elif "PID" in child.attrib['name']:
                     msg_pid = child.text
                     print("Message PID: ", msg_pid)
@@ -137,13 +143,53 @@ class RPC_Handler(socketserver.BaseRequestHandler):
                         print("Process status")
                 else:
                     print("ERROR: Unexpected message field.")
-        return True
+                    msg_result = -1
+        return (msg_id, msg_result, msg_sensor_id, msg_pid)
 
-    def send_data(self):
-        """Sends data back to remote sensor interface.
+
+    def build_xml_document(self, ret_data):
+        """Builds a XML document to send back to the interface.
+
+        Example of desired XML response format:
+        ```
+        <message>
+            <id>8</id>
+            <data type="uint8_t" name="result">1</data>
+            <data type="uint8_t" name="sensorid">1</data>
+            <data type="uint32_t" name="pid">12232</data>
+        </message>
+        ```
 
         """
-        pass
+        print("Building XML response...")
+        message = ET.Element('message')
+
+        # Append subelement, <id>
+        if ret_data[0] is not None:
+            result_id = ET.SubElement(message,"id")
+            result_id.text = str(ret_data[0]+1) # Resp is always id++
+            message.append(result_id)
+
+        # Append subelement sensor_id
+        if ret_data[1] is not None:
+            sensor_id = ET.SubElement(message, "data", {
+                "type":"uint8_t",
+                "name":"sensorid"
+            })
+            sensor_id.text = str(ret_data[1])
+            message.append(sensor_id)
+
+        # Print message
+        print(self.prettify(message))
+
+    def prettify(self, elem):
+        """Return a pretty-printed XML string for the Element.
+
+        from https://pymotw.com/3/xml.etree.ElementTree/create.html
+        """
+        rough_string = ElementTree.tostring(elem, 'utf-8')
+        reparsed = minidom.parseString(rough_string)
+        return reparsed.toprettyxml(indent="  ")
 
     def handle(self):
         """Handles all incoming TCP messages
@@ -153,24 +199,18 @@ class RPC_Handler(socketserver.BaseRequestHandler):
         close = 0
 
         # Shared between requests and responses
-        msg_id = None
-        msg_result = None
-        msg_sensor_id = None
-        msg_pid = None
-
         while not close:
             _data = self.request.recv(1024)
             print("{} bytes rcvd: {}: ".format(len(_data), _data))
 
             # Parse XML command, should return if OK
-            if not self.parse_command(_data, msg_id, msg_result,
-                                        msg_sensor_id, msg_pid):
-                # Unable to parse command, close socket
-                # to prevent future malformed commands
-                close = 1
-            
-            # Send data back
-            # TODO!
+            ret_data = self.parse_command(_data)
+            print(ret_data)
+
+            # Build XML response
+            self.build_xml_document(ret_data)
+
+            # Send XML response back to interface
 
             # Keep TCP server alive
             # TODO: Handle an incoming msg which contains a command
