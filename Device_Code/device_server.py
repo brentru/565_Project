@@ -145,9 +145,14 @@ class RPC_Handler(socketserver.BaseRequestHandler):
                         print("Killing active process..")
                         msg_result = kill_sensor_process(int(msg_pid))
                     elif msg_id == 3:
-                        # Re-dispatch the process
-                        # TODO!
-                        print("Reset process")
+                        # Restart the process, attempt to kill existing process
+                        msg_result = kill_sensor_process(int(msg_pid))
+                        if not msg_result:
+                            print("Process did not exist.")
+                        # then, re-dispatch a process, obtain new pid
+                        msg_pid = dispatch_sensor_process(msg_sensor_id)
+                        print("Restarted process")
+                        msg_result = 1
                     elif msg_id == 15:
                         # Get process status
                         # TODO
