@@ -73,21 +73,21 @@ def kill_sensor_process(pid):
 
     """
     print("Killing process %d"%pid)
-    print(PID_POOL)
-    if pid not in PID_POOL[0]:
-        print("ERROR: PID not found in PID pool")
-        return False
+
     # obtain index of subprocess.Popen object
     pid_index = next((i for i, v in enumerate(PID_POOL) if v[0] == pid), None)
-    # kill it
+    if pid_index is None:
+        print("ERROR: PID not found in thread pool.")
+        return 0
+    # kill the process
     PID_POOL[pid_index][1].terminate()
     # wait for child process to terminate from zombie state
     PID_POOL[pid_index][1].wait()
-    # Negative return code indicates process has terminated
+    # Negative returncode indicates process has terminated
     if PID_POOL[pid_index][1].returncode < 0:
         print("Process killed!")
-        return True
-    return False
+        return 1
+    return 0
 
 def prettify(elem):
     """Return a pretty-printed XML string for the Element.
