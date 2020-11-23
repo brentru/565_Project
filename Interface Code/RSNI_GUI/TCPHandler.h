@@ -1,3 +1,10 @@
+/*
+ * File: TCPHandler.h
+ * Author: Todd Morehouse
+ * Description
+ *  A singleton class that will handle all communication over a TCP socket. This class is intended
+ *  to be used as the only way to communicate over TCP.
+ */
 #ifndef TCPHANDLER_H
 #define TCPHANDLER_H
 

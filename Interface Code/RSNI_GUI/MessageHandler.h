@@ -1,3 +1,11 @@
+/*
+ * File: MessageHandler.h
+ * Author: Todd Morehouse
+ * Description
+ *  This class handles receiving, parsing, and distributing any messages from the tcp socket, as well as
+ *  transmitting any messages over tcp.
+ */
+
 #ifndef MESSAGEHANDLER_H
 #define MESSAGEHANDLER_H
 

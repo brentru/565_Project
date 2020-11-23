@@ -1,3 +1,10 @@
+/*
+ * File: MainWindow.h
+ * Author: Todd Morehouse
+ * Description
+ *  The mainwindow class, responsible for renderring the mainwindow and controlling each individual page.
+ */
+
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_h
 

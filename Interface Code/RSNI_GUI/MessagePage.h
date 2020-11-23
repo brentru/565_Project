@@ -1,3 +1,10 @@
+/*
+ * File: MessagePage.h
+ * Author: Todd Morehouse
+ * Description
+ *  The class for creating, displaying, and handling the message page gui.
+ */
+
 #ifndef MESSAGEPAGE_H
 #define MESSAGEPAGE_H
 

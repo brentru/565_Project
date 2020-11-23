@@ -1,3 +1,11 @@
+/*
+ * File: TablePushButton.h
+ * Author: Todd Morehouse
+ * Description
+ *  A custom implementation of QPushButton specifically to be used in a table. This adds an identifier
+ *  to a push button, and a signal that relays this ID when the button is released.
+ */
+
 #ifndef TABLEPUSHBUTTON_H
 #define TABLEPUSHBUTTON_H
 

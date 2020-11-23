@@ -1,3 +1,10 @@
+/*
+ * File: GlobalTypes.h
+ * Author: Todd Morehouse
+ * Description
+ *  Header file containing global data type definitions.
+ */
+
 #ifndef GLOBALTYPES_H
 #define GLOBALTYPES_H
 

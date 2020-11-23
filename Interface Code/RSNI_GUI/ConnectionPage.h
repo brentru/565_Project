@@ -1,3 +1,10 @@
+/*
+ * File: ConnectionPage.h
+ * Author: Todd Morehouse
+ * Description
+ *  This class handles displaying the connection page GUI, as well as handling user input from the GUI.
+ */
+
 #ifndef CONNECTIONPAGE_H
 #define CONNECTIONPAGE_H
 

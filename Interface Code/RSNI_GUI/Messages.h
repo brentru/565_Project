@@ -1,3 +1,10 @@
+/*
+ * File: Messages.h
+ * Author: Todd Morehouse
+ * Description
+ *  Contains the message ID for each message. These message IDs were defined in our project plan.
+ */
+
 #ifndef MESSAGES_H
 #define MESSAGES_H
 
@@ -18,6 +25,8 @@ namespace Messages{
     const static int PauseAllProcessesResponseID    = 14;
     const static int ProcessStatusID                = 15;
     const static int ProcessStatusResponseID        = 16;
+    const static int ResumeProcessID                = 17;
+    const static int ResumeProcessResponseID        = 18;
 }
 
 #endif // MESSAGES_H
