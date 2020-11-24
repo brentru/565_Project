@@ -55,8 +55,8 @@ def dispatch_sensor_process(sensor_id):
     print("Spawning process type: %d..."%int(sensor_id))
     proc = subprocess.Popen(['python3', 'temperature_sensor.py'],stdout=subprocess.PIPE)
     print('Process PID: ', proc.pid)
-    # Add PID object and process to the active PID pool
-    PID_POOL.append((proc.pid, proc))
+    # Add PID object, process, and sensor ID to the active PID pool
+    PID_POOL.append((proc.pid, proc, sensor_id))
     return proc.pid
 
 def read_sensor_process(pid):
@@ -165,13 +165,28 @@ class RPC_Handler(socketserver.BaseRequestHandler):
                         print("Killing active process..")
                         msg_result = send_signal_process(int(msg_pid), SIG_KILL)
                     elif msg_id == 3:
-                        # Restart the process, attempt to kill existing process
+                        # Restart the process
+                        print("Restarting Process...")
+                        # We need to grab the sensor ID for this process
+                        # Iterate over PID_POOL to find process idx
+                        for i in range(0, len(PID_POOL)):
+                            print(PID_POOL[i][2])
+                            print(int(PID_POOL[i][0]))
+                            print(msg_pid)
+                            if int(PID_POOL[i][0]) == msg_pid:
+                                print("PID ACCESSED: ", msg_pid)
+                                sensor_id_idx = i
+                                break
+                        print("Index sensor: ", sensor_id_idx)
+                        sensor_id = PID_POOL[sensor_id_idx][2]
+                        print("Sensor ID: ", sensor_id)
+                        # Attempt to kill the process
                         msg_result = send_signal_process(int(msg_pid), SIG_KILL)
                         if not msg_result:
                             print("Process did not exist.")
-                        # then, re-dispatch a process, obtain new pid
-                        msg_pid = dispatch_sensor_process(msg_sensor_id)
-                        print("Restarted process")
+                        # Re-dispatch a process, obtain new pid
+                        msg_pid = dispatch_sensor_process(sensor_id)
+                        print("Process restarted!")
                         msg_result = 1
                     elif msg_id == 5: # Pause process
                         msg_result = send_signal_process(int(msg_pid), SIG_PAUSE)
@@ -251,6 +266,10 @@ class RPC_Handler(socketserver.BaseRequestHandler):
             _data = self.request.recv(1024)
             print("{} bytes rcvd: {}: ".format(len(_data), _data))
 
+            # return if nothing in the socket, don't parse
+            if _data == b'':
+                return
+
             # Parse XML command, should return if OK
             ret_data = self.parse_command(_data)
             print(ret_data)
@@ -264,11 +283,6 @@ class RPC_Handler(socketserver.BaseRequestHandler):
                 self.request.sendall(xml_msg)
 
             # Keep TCP server alive
-            # TODO: Handle an incoming msg which contains a command
-            # which kills the server (shuts socket)
-            if not _data:
-                # EOF, client closed, just return
-                return
             if b'quit' in _data:
                 close = 1
 
