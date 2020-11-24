@@ -165,25 +165,18 @@ class RPC_Handler(socketserver.BaseRequestHandler):
                         print("Killing active process..")
                         msg_result = send_signal_process(int(msg_pid), SIG_KILL)
                     elif msg_id == 3:
-                        # Restart the process
                         print("Restarting Process...")
-                        # We need to grab the sensor ID for this process
-                        # Iterate over PID_POOL to find process idx
-                        for i in range(0, len(PID_POOL)):
-                            print(PID_POOL[i][2])
-                            print(int(PID_POOL[i][0]))
-                            print(msg_pid)
-                            if int(PID_POOL[i][0]) == msg_pid:
-                                print("PID ACCESSED: ", msg_pid)
-                                sensor_id_idx = i
+                        sensor_id = None
+                        # Iterate over PID_POOL to find sensor process idx
+                        # in the process pool
+                        for i in range(len(PID_POOL)):
+                            if int(PID_POOL[i][0]) == int(msg_pid):
+                                sensor_id = PID_POOL[i][2]
                                 break
-                        print("Index sensor: ", sensor_id_idx)
-                        sensor_id = PID_POOL[sensor_id_idx][2]
-                        print("Sensor ID: ", sensor_id)
+                        if sensor_id is None:
+                            print("Sensor process not found!")
                         # Attempt to kill the process
                         msg_result = send_signal_process(int(msg_pid), SIG_KILL)
-                        if not msg_result:
-                            print("Process did not exist.")
                         # Re-dispatch a process, obtain new pid
                         msg_pid = dispatch_sensor_process(sensor_id)
                         print("Process restarted!")
