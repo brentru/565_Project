@@ -33,6 +33,11 @@ SENSOR_CPU_USAGE = 3
 SENSOR_CPU_TEMP  = 4
 SENSOR_DUMMY     = 5
 
+# Signal Types
+SIG_KILL  = 0
+SIG_PAUSE = 1
+SIG_CONT  = 2
+
 # PID Pool - stores all the PIDs currently in-use
 PID_POOL = []
 
@@ -68,9 +73,10 @@ def read_sensor_process(pid):
     print("Output: ", proc_out)
     return proc_out
 
-def send_signal_process(pid, sigstop=False, sigcont=False):
+def send_signal_process(pid, desired_signal):
     """Kills an active sensor process.
     :param int pid: A valid process identifier.
+    :param int desired_signal: SIG_STOP, SIG_PAUSE, SIG_CONT
 
     """
     print("Sending signal to process %d..."%pid)
@@ -80,24 +86,28 @@ def send_signal_process(pid, sigstop=False, sigcont=False):
     if pid_index is None:
         print("ERROR: PID not found in thread pool.")
         return 0
-    
-    if not sigstop:
+
+    if desired_signal is SIG_PAUSE:
         print("Sending pause signal to process")
+        print('pid_index:', pid_index)
         PID_POOL[pid_index][1].send_signal(signal.SIGSTOP)
         return 1
-    elif not sigcont:
+    elif desired_signal is SIG_CONT:
         print("Sending resume signal to process")
-        PID_POOL[pid_index][1].send_signal(signal.SIGSTOP)
+        PID_POOL[pid_index][1].send_signal(signal.SIGCONT)
         return 1
-    # kill the process
-    PID_POOL[pid_index][1].terminate()
-    # wait for child process to terminate from zombie state
-    PID_POOL[pid_index][1].wait()
-    # Negative returncode indicates process has terminated
-    if PID_POOL[pid_index][1].returncode < 0:
-        print("Process killed!")
-        return 1
-    return 0
+    elif desired_signal is SIG_KILL:
+        print("Killing process...")
+        # kill the process
+        PID_POOL[pid_index][1].terminate()
+        # wait for child process to terminate from zombie state
+        PID_POOL[pid_index][1].wait()
+        # Negative returncode indicates process has terminated
+        if PID_POOL[pid_index][1].returncode < 0:
+            print("Process killed!")
+            return 1
+    else:
+        return 0
 
 def prettify(elem):
     """Return a pretty-printed XML string for the Element.
@@ -153,10 +163,10 @@ class RPC_Handler(socketserver.BaseRequestHandler):
                     print("Message PID: ", msg_pid)
                     if msg_id == 1: # Kill active sensor process
                         print("Killing active process..")
-                        msg_result = send_signal_process(int(msg_pid))
+                        msg_result = send_signal_process(int(msg_pid), SIG_KILL)
                     elif msg_id == 3:
                         # Restart the process, attempt to kill existing process
-                        msg_result = send_signal_process(int(msg_pid))
+                        msg_result = send_signal_process(int(msg_pid), SIG_KILL)
                         if not msg_result:
                             print("Process did not exist.")
                         # then, re-dispatch a process, obtain new pid
@@ -164,13 +174,13 @@ class RPC_Handler(socketserver.BaseRequestHandler):
                         print("Restarted process")
                         msg_result = 1
                     elif msg_id == 5: # Pause process
-                        msg_result = send_signal_process(int(msg_pid), sigstop=True)
+                        msg_result = send_signal_process(int(msg_pid), SIG_PAUSE)
                     elif msg_id == 15:
                         # Get process status
                         # TODO
                         print("Process status")
                     elif msg_id == 17: # Continue process
-                        msg_result = send_signal_process(int(msg_pid), sigcont=True)
+                        msg_result = send_signal_process(int(msg_pid), SIG_CONT)
                 else:
                     print("ERROR: Unexpected message field.")
                     msg_result = 0
