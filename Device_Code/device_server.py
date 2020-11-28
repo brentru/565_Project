@@ -48,12 +48,26 @@ def dispatch_sensor_process(sensor_id):
 
     """
     # Verify that sensor process is within the node's ATTACHED_SENSORS
-    if int(sensor_id) not in ATTACHED_SENSORS:
+    if sensor_id not in ATTACHED_SENSORS:
         print("ERROR: Sensor node does not contain this sensor type!")
         return 0 # failed
 
     print("Spawning process type: %d..."%int(sensor_id))
-    proc = subprocess.Popen(['python3', 'temperature_sensor.py'],stdout=subprocess.PIPE)
+    sensor_process = 'temperature_sensor.py'
+    if sensor_id == SENSOR_TEMP:
+        sensor_process = 'temperature_sensor.py'
+    elif sensor_id == SENSOR_HUMID:
+        sensor_process = 'humidity_sensor.py'
+    elif sensor_id == SENSOR_CPU_USAGE:
+        sensor_process = 'cpu_util_sensor.py'
+    elif sensor_id == SENSOR_CPU_TEMP:
+        sensor_process = 'cpu_temp_sensor.py'
+    elif sensor_id == SENSOR_DUMMY:
+        sensor_process = 'temperature_sensor.py'
+
+    print('opening' + sensor_process)
+
+    proc = subprocess.Popen(['python3', sensor_process], stdout=subprocess.PIPE)
     print('Process PID: ', proc.pid)
     # Add PID object, process, and sensor ID to the active PID pool
     PID_POOL.append((proc.pid, proc, sensor_id))
@@ -158,7 +172,7 @@ class RPC_Handler(socketserver.BaseRequestHandler):
                     print("Message sensorID: ", msg_sensor_id)
                     # Attempt to spawn a sensor process
                     # with desired sensor id
-                    msg_pid = dispatch_sensor_process(msg_sensor_id)
+                    msg_pid = dispatch_sensor_process(int(msg_sensor_id))
                     msg_result = 1
                 elif "pid" in child.attrib['name']:
                     msg_pid = child.text
@@ -182,7 +196,7 @@ class RPC_Handler(socketserver.BaseRequestHandler):
                         # Attempt to kill the process
                         msg_result = send_signal_process(int(msg_pid), SIG_KILL)
                         # Re-dispatch a process, obtain new pid
-                        msg_pid = dispatch_sensor_process(sensor_id)
+                        msg_pid = dispatch_sensor_process(int(sensor_id))
                         print("Process restarted!")
                         msg_result = 1
                     elif msg_id == 5: # Pause process
