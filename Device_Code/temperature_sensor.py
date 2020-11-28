@@ -15,6 +15,5 @@ def get_temperature():
 if __name__ == '__main__':
     while True:
         get_temperature()
-        time.sleep(1)
 
 

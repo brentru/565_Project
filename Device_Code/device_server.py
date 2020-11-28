@@ -64,14 +64,16 @@ def read_sensor_process(pid):
     :param int pid: A valid PID.
     """
     print("Reading sensor process: %d"%pid)
-    if pid not in PID_POOL:
-        print("ERROR: PID not found in PID pool")
-        return False
 
-    proc_out = PID_POOL[pid][1].stdout.readline()
-    # TODO: This should be moved within parse_command
-    print("Output: ", proc_out)
-    return proc_out
+    # obtain index of subprocess.Popen object
+    pid_index = next((i for i, v in enumerate(PID_POOL) if v[0] == pid), None)
+    if pid_index is None:
+        print("ERROR: PID not found in thread pool.")
+        return 0
+
+    proc_out = PID_POOL[pid_index][1].stdout.readline()
+    return proc_out.decode().strip('\n')
+
 
 def send_signal_process(pid, desired_signal):
     """Kills an active sensor process.
@@ -129,12 +131,12 @@ class RPC_Handler(socketserver.BaseRequestHandler):
         :param str xml_cmd_string: XML message.
 
         """
-
         msg_id = None
         msg_result = None
         msg_sensor_id = None
         msg_pid = None
-
+        msg_old_pid = None
+        msg_value = None
         try: # attempt to parse XML command from interface
             root = ET.fromstring(xml_cmd_string.decode())
         except:
@@ -183,16 +185,17 @@ class RPC_Handler(socketserver.BaseRequestHandler):
                         msg_result = 1
                     elif msg_id == 5: # Pause process
                         msg_result = send_signal_process(int(msg_pid), SIG_PAUSE)
-                    elif msg_id == 15:
-                        # Get process status
-                        # TODO
+                    elif msg_id == 15: # Get process status
                         print("Process status")
+                        msg_value = read_sensor_process(int(msg_pid))
+                        print("Process Data: ", msg_value)
+                        msg_result = 1
                     elif msg_id == 17: # Continue process
                         msg_result = send_signal_process(int(msg_pid), SIG_CONT)
                 else:
                     print("ERROR: Unexpected message field.")
                     msg_result = 0
-        return (msg_id, msg_result, msg_sensor_id, msg_pid)
+        return (msg_id, msg_result, msg_sensor_id, msg_pid, msg_old_pid, msg_value)
 
 
     def build_xml_document(self, ret_data):
@@ -240,6 +243,16 @@ class RPC_Handler(socketserver.BaseRequestHandler):
                 "type":"uint32_t"
             })
             xml_sensor_id.text = str(ret_data[3])
+        
+        # TODO: append old PID
+
+        # append value
+        if ret_data[5] is not None:
+            xml_value = ET.SubElement(message, "data", {
+                "name":"value",
+                "type":"float"
+            })
+            xml_value.text = str(ret_data[5])
 
         # Print message
         print(prettify(message))
