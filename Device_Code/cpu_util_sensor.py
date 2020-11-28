@@ -4,12 +4,12 @@
 # LICENSE: MIT-0
 import random
 
-get_cpu_util():
+def get_cpu_util():
     """Mock CPU utilization
 
     """
     cpu_util = random.randint(0,100)
-    print("%d%"%cpu_util)
+    print("{}% Usage".format(cpu_util))
 
 if __name__ == '__main__':
     while True:
