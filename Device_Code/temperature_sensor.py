@@ -9,8 +9,8 @@ def get_temperature():
     """Mocks a temperature sensor outputting once every second.
 
     """
-    temperature_data = randint(0, 100)
-    print(temperature_data)
+    temperature_data = randint(0, 99)
+    print("%dF"%temperature_data)
 
 if __name__ == '__main__':
     while True:

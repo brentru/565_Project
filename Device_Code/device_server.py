@@ -177,6 +177,8 @@ class RPC_Handler(socketserver.BaseRequestHandler):
                                 break
                         if sensor_id is None:
                             print("Sensor process not found!")
+                        # set OLD pid
+                        msg_old_pid = msg_pid
                         # Attempt to kill the process
                         msg_result = send_signal_process(int(msg_pid), SIG_KILL)
                         # Re-dispatch a process, obtain new pid
@@ -244,7 +246,13 @@ class RPC_Handler(socketserver.BaseRequestHandler):
             })
             xml_sensor_id.text = str(ret_data[3])
         
-        # TODO: append old PID
+        # append old PID
+        if ret_data[4] is not None:
+            xml_sensor_id = ET.SubElement(message, "data", {
+                "name":"oldpid",
+                "type":"uint32_t"
+            })
+            xml_sensor_id.text = str(ret_data[4])
 
         # append value
         if ret_data[5] is not None:
