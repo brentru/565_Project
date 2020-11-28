@@ -8,17 +8,15 @@
 from random import randint
 
 
-get_temperature():
-    """Mocks a CPU temperature sensor outputting once every second.
+def get_temperature():
+    """Mocks a temperature sensor outputting once every second.
 
     """
-    while True:
-        temperature_data = randint(0, 100)
-        print(temperature_data)
-        time.sleep(1)
+    temperature_data = randint(0, 99)
+    print("%dF"%temperature_data)
 
 if __name__ == '__main__':
-    print("Started CPU temperature sensor!")
-    get_temperature()
+    while True:
+        get_temperature()
 
 

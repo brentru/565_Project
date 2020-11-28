@@ -8,13 +8,11 @@ get_humidity():
     """Mocks a humidity sensor outputting once every second.
 
     """
-    while True:
-        humidity_data = randint(0, 100)
-        print(humidity_data)
-        time.sleep(1)
+    humidity_data = round(random.uniform(10,80),2)
+    print("%fRH")
 
 if __name__ == '__main__':
-    print("Started humidity sensor!")
-    get_humidity()
+    while True:
+        get_humidity()
 
 
